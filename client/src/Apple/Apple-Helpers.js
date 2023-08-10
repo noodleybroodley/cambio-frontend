@@ -8,7 +8,7 @@ export async function getMusicKitInstance() {
     */
     const appleInstance = window.MusicKit;
     let musicKit;
-    return fetch("https://cambio-backend.onrender.com/api/appleToken").then(response => response.json())
+    return fetch("/api/appleToken").then(response => response.json())
         .then(res => {
             appleInstance.configure({
                 developerToken: res.token,
