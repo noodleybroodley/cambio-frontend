@@ -8,6 +8,7 @@ export async function getMusicKitInstance() {
     */
     const appleInstance = window.MusicKit;
     let musicKit;
+    console.log(process.env.REACT_APP_ROUTE)
     return fetch(process.env.REACT_APP_ROUTE+"/api/appleToken").then(response => response.json())
         .then(res => {
             appleInstance.configure({
