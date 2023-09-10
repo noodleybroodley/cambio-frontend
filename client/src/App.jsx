@@ -122,8 +122,11 @@ export function App() {
               setPlaylistTracks(undefined);
             }}
           />
-          <div style={{ position: "relative", top: "15vh" }}>
+          <div style={{ position: "relative", top: "15vh"}}>
+          {/* {isLoading ? <CircularProgress style={{ position: "relative", left: "-25vw", top: "-8vh" }} /> : null} */}
+          <CircularProgress style={{display: "flex"}}/>
             <CustomizedForm
+              style={{display: "flex"}}
               onSubmit={() => {
                 musicKit.authorize().then(async (val) => {
                   let name = playlistName.length > 0 ? playlistName : playlist.name;
@@ -137,7 +140,6 @@ export function App() {
               icon={<ArrowRight />}
               placeholder={"New Playlist Name (or Press Enter)"}
             />
-            {isLoading ? <CircularProgress style={{ position: "relative", left: "-25vw", top: "-8vh" }} /> : null}
           </div>
         </>
         : null}
