@@ -6,7 +6,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { ArrowRight } from "@mui/icons-material";
 import { PlaylistCard } from "./components/PlaylistCard/PlaylistCard";
 import { ClientEvent } from "clientevent";
-import { CircularProgress } from '@mui/material';
 import SuccessDialog from './components/SuccessDialog/SuccessDialog';
 import ErrorDialog from './components/ErrorDialog';
 
@@ -117,14 +116,13 @@ export function App() {
             no_of_songs={playlistTracks.length}
             images={playlist.images}
             uid={playlist.id}
+            isLoading={isLoading}
             onCancel={() => {
               setPlaylist(undefined);
               setPlaylistTracks(undefined);
             }}
           />
           <div style={{ position: "relative", top: "15vh"}}>
-          {/* {isLoading ? <CircularProgress style={{ position: "relative", left: "-25vw", top: "-8vh" }} /> : null} */}
-          <CircularProgress style={{display: "flex"}}/>
             <CustomizedForm
               style={{display: "flex"}}
               onSubmit={() => {
