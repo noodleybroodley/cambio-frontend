@@ -3923,7 +3923,7 @@ css-loader@^6.5.1:
   integrity sha512-xDAXtEVGlD0gJ07iclwWVkLoZOpEvAWaSyf6W18S2pOC//K8+qUDIx8IIT3D+HjnmkJPQeesOPv5aiUaJsCM2g==
   dependencies:
     icss-utils "^5.1.0"
-    postcss "^8.4.21"
+    postcss "^8.4.31"
     postcss-modules-extract-imports "^3.0.0"
     postcss-modules-local-by-default "^4.0.3"
     postcss-modules-scope "^3.0.0"
@@ -8769,7 +8769,7 @@ resolve-url-loader@^4.0.0:
     adjust-sourcemap-loader "^4.0.0"
     convert-source-map "^1.7.0"
     loader-utils "^2.0.0"
-    postcss "^7.0.35"
+    postcss "^8.4.31"
     source-map "0.6.1"
 
 resolve.exports@^1.1.0:
