@@ -10,6 +10,7 @@ export default function PlaylistInfo (props) {
                 images={props.playlist.images}
                 uid={props.playlist.id}
                 isLoading={props.isLoading}
+                isSpotify={props.isSpotify}
                 onCancel={() => {
                   props.setPlaylist(undefined);
                   props.setPlaylistTracks(undefined);
@@ -21,6 +22,7 @@ export default function PlaylistInfo (props) {
                 setPlaylistName={props.setPlaylistName}
                 playlist={props.playlist}
                 playlistTracks={props.playlistTracks}
+                isSpotify={props.isSpotify}
               />
             </>
 	)

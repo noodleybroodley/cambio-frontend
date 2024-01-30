@@ -7,10 +7,17 @@ export default function PlaylistNameField (props) {
 	<CustomizedForm
 	  style={{ display: "flex" }}
 	  onSubmit={() => {
-		props.musicKit.authorize().then(async (val) => {
-		  let name = props.playlistName.length > 0 ? props.playlistName : props.playlist.name;
-		  await addToAppleLibrary(props.playlistTracks, name, props.musicKit);
-		})
+		if(props.isSpotify){
+			//if converting from spotify to apple music
+			props.musicKit.authorize().then(async (val) => {
+				let name = props.playlistName.length > 0 ? props.playlistName : props.playlist.name;
+				await addToAppleLibrary(props.playlistTracks, name, props.musicKit);
+			})
+		} else {
+			//if converting from apple music to spotify
+			//To-Do: authorize with user Spotify account and call addToSpotifyLibrary
+			console.log("yerrrrrrrrr");
+		}
 	  }}
 	  onChange={e => {
 		let name = e.target.value;

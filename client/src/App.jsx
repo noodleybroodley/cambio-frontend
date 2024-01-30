@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { getMusicKitInstance } from './Apple/Apple-Helpers';
+import { getMusicKitInstance,getApplePlaylist } from './Apple/Apple-Helpers';
 import { ClientEvent } from "clientevent";
 import SuccessDialog from './components/SuccessDialog/SuccessDialog';
 import ErrorDialog from './components/ErrorDialog';
@@ -10,7 +10,7 @@ import PlaylistSearchBar from './components/CustomizedForm/PlaylistSearchBar';
 import PlaylistInfo from './components/PlaylistInfo/PlaylistInfo';
 
 export function App() {
-  const [playlistID, setPlaylistID] = useState("");
+  const [playlistIDObj, setPlaylistIDObj] = useState({isSpotify: false,id: ""});
   const [playlistName, setPlaylistName] = useState("");
   const [playlist, setPlaylist] = useState(undefined);
   const [playlistTracks, setPlaylistTracks] = useState(undefined);
@@ -34,9 +34,9 @@ export function App() {
     setMusicKit(kit);
   };
 
-  function getPlaylist() {
+  function getSpotifyPlaylist() {
     /*** Reaches out to the backend and uses the given playlist ID to retrieve all playlist tracks.*/
-    let route = `${process.env.REACT_APP_BACKEND_ROUTE}/api/getPlaylist/` + playlistID;
+    let route = `${process.env.REACT_APP_BACKEND_ROUTE}/api/getPlaylist/` + playlistIDObj['id'];
     fetch(route).then((res) => {
       res.json().then((data) => {
         if (data[0].body?.error) {
@@ -44,6 +44,7 @@ export function App() {
         } else {
           setPlaylistTracks(data[0]);
           setPlaylist(data[1].body);
+          console.log(data[1].body);
         }
       })
     }
@@ -73,15 +74,24 @@ export function App() {
           <Title hasPlaylist={!!playlist} />
           <PlaylistSearchBar
             hasPlaylist={!!playlist}
-            onSubmit={getPlaylist}
+            onSubmit={async ()=>{
+              playlistIDObj["isSpotify"] === true ? getSpotifyPlaylist() : await getApplePlaylist(playlistIDObj["id"],musicKit,setPlaylistTracks,setPlaylist);
+            }}
             onChange={e => {
               e.preventDefault();
               let id = e.target.value;
-              id = id.replace("https://open.spotify.com/playlist/", "");
-              setPlaylistID(id)
+              let isSpotify = false;
+              if(id.includes("spotify")){
+                isSpotify = true;
+                id = id.replace("https://open.spotify.com/playlist/", "");
+              } else {
+                let idArray = id.split("/");
+                id = idArray[idArray.length - 1];
+              }
+              setPlaylistIDObj({id: id,isSpotify: isSpotify})
             }}
           />
-          {!!playlist ?
+          {playlist ?
             <PlaylistInfo
               playlist={playlist}
               playlistTracks={playlistTracks}
@@ -91,6 +101,7 @@ export function App() {
               musicKit={musicKit}
               playlistName={playlistName}
               setPlaylistName={setPlaylistName}
+              isSpotify={playlistIDObj.isSpotify}
             />
             :
             null

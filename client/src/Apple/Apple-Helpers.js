@@ -367,3 +367,53 @@ export function splitArtists(artists) {
     }
     return seperatedArtists
 }
+
+/*------------------Apple -> Spotify Conversion Helpers-----------------------*/
+
+export async function getApplePlaylist(id,musicKit,setPlaylistTracks,setPlaylist){
+    /**Gets and sets playlist data and playlist tracks
+     * 
+     * Params:
+     * id: String
+     * musicKit: Music Kit Instance
+     * setPlaylistTracks: Function
+     * setPlaylist: Function
+     * 
+     * Return:
+     * None
+     * 
+    */
+    const url = (id.includes('pl') ? 'https://api.music.apple.com/v1/catalog/us/playlists/' : 'https://api.music.apple.com/v1/me/library/playlists/') + id;
+    const headers = await getHeaders(musicKit);
+    const data = await fetch(url, {
+        headers: headers
+    }).then((response)=>response.json()).then((data)=>{return data.data});
+    console.log("playlist: ", data[0]);
+    const songs = await getAllSongs(data[0]['relationships']['tracks'],headers);
+    setPlaylistTracks(songs);
+    setPlaylist({name: data[0].attributes.name,images: [data[0].attributes.artwork], id: data[0].id});
+    console.log(songs);
+}
+
+export async function getAllSongs(tracks,headers){
+    /**Gets all songs
+     * 
+     * Params:
+     * tracks: Object
+     * headers: Headers Object
+     * 
+     * Return:
+     * songs: Object[]
+     * 
+    */
+    let songs = tracks['data'];
+    while(tracks['next'] !== undefined){
+        //retrieves all tracks until there are no more left to retrieve
+        let data = await fetch(`https://api.music.apple.com${tracks.next}`, {
+            headers: headers
+        }).then((response)=>response.json()).then(data=>{return data});
+        songs = songs.concat(data.data);
+        tracks = data;
+    }
+    return songs;
+}
