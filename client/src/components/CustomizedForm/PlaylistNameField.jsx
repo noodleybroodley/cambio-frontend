@@ -1,3 +1,4 @@
+import React from 'react';
 import CustomizedForm from "./CustomizedForm";
 import { addToAppleLibrary} from '../../Apple/Apple-Helpers';
 import { ArrowRight } from "@mui/icons-material";
